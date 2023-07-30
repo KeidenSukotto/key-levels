@@ -1,0 +1,56 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © KeidenIsKayden
+
+//@version=5
+indicator("Key Levels", overlay = true)
+
+// VARIABLES
+
+string symbol = syminfo.ticker
+
+bool base_level_plotted = false
+
+float current_price = close
+
+float base_key_level = switch symbol
+    "EURUSD" => math.round(current_price/0.01) * 0.01
+    "AUDCHF" => math.round(current_price/0.01) * 0.01
+    "NZDCAD" => math.round(current_price/0.01) * 0.01
+    "GBPJPY" => math.round(current_price/10) * 10
+    => na
+
+float above_base_key_level_increments = base_key_level
+float below_base_key_level_increments = base_key_level
+
+float box_increment = switch symbol
+    "EURUSD" => 0.0005
+    "AUDCHF" => 0.0005
+    "NZDCAD" => 0.0005
+    "GBPJPY" => 0.10
+    => na
+
+
+// LOGIC
+
+if symbol == "EURUSD" or symbol == "AUDCHF" or symbol == "NZDCAD" or symbol == "GBPJPY"
+    for iteration = 1 to 10
+        if not(base_level_plotted)
+            box.new(bar_index[1], top = base_key_level + box_increment, right = bar_index, bottom = base_key_level - box_increment, border_width = 0, extend = extend.both, bgcolor = color.rgb(120, 123, 134, 90))
+            line.new(x1 = bar_index[1], y1 = base_key_level, x2 = bar_index, y2 = base_key_level, xloc = xloc.bar_index, extend = extend.both, color = color.black, style = line.style_dashed, width = 1)
+            base_level_plotted := true
+        
+        else
+            box.new(bar_index[1], top = above_base_key_level_increments + box_increment, right = bar_index, bottom = above_base_key_level_increments - box_increment, border_width = 0, extend = extend.both, bgcolor = color.rgb(120, 123, 134, 90))
+            line.new(x1 = bar_index[1], y1 = above_base_key_level_increments, x2 = bar_index, y2 = above_base_key_level_increments, xloc = xloc.bar_index, extend = extend.both, color = color.black, style = line.style_dashed, width = 1)
+
+            box.new(bar_index[1], top = below_base_key_level_increments + box_increment, right = bar_index, bottom = below_base_key_level_increments - box_increment, border_width = 0, extend = extend.both, bgcolor = color.rgb(120, 123, 134, 90))
+            line.new(x1 = bar_index[1], y1 = below_base_key_level_increments, x2 = bar_index, y2 = below_base_key_level_increments, xloc = xloc.bar_index, extend = extend.both, color = color.black, style = line.style_dashed, width = 1)
+
+        
+        if symbol == "EURUSD" or symbol == "AUDCHF" or symbol == "NZDCAD"
+            above_base_key_level_increments := above_base_key_level_increments + 0.01
+            below_base_key_level_increments := below_base_key_level_increments - 0.01
+        
+        else if symbol == "GBPJPY"
+            above_base_key_level_increments := above_base_key_level_increments + 5
+            below_base_key_level_increments := below_base_key_level_increments - 5
