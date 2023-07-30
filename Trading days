@@ -1,0 +1,17 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © KeidenIsKayden
+
+//@version=5
+indicator("Non-trading days and Weekly Intervals", overlay = true)
+
+if timeframe.change("1W")
+    line.new(x1 = bar_index, y1 = high, x2 = bar_index, y2 = low, xloc = xloc.bar_index, extend = extend.both, style = line.style_dashed, color = color.black)
+
+non_trading_days = if (dayofweek(time, "UTC+2") == dayofweek.friday) or (dayofweek(time, "UTC+2") == dayofweek.monday) or (dayofweek(time, "UTC+2") == dayofweek.saturday) or (dayofweek(time, "UTC+2") == dayofweek.sunday)
+    color.rgb(255, 82, 82, 85)
+
+
+else
+    na
+
+bgcolor(color = non_trading_days, editable = false)
