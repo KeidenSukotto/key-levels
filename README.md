@@ -46,10 +46,5 @@ Feel free to customize and adapt the indicator to your trading strategy and pref
 
 This script is subject to the terms of the Mozilla Public License 2.0. For more information, please refer to the [Mozilla Public License 2.0](https://mozilla.org/MPL/2.0/).
 
-## Author
-
-This script was authored by [KeidenIsKayden](https://github.com/KeidenIsKayden).
-
----
 
 **Disclaimer:** This script is provided for educational purposes and does not constitute financial advice. Use it responsibly and at your own risk when trading or investing.
